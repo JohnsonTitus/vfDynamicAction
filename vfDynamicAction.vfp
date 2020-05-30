@@ -1,0 +1,26 @@
+<apex:page standardController="Account" 
+           extensions="DynamicActionsHandler">
+    <br/>
+
+    <apex:dataTable value="{!customObjectDetails}" var="coDetails">
+        <apex:column >
+            <apex:facet name="header">Custom Object</apex:facet>
+            <!--display the label of the sobject-->
+            <apex:outputText value="{!coDetails.labelStr}"/> 
+        </apex:column>
+        <apex:column >
+            <apex:facet name="header">Actions</apex:facet>
+            <!--nameStr has the name of the sobject, rendered attribute is to check
+            whether the object is creatable by using the boolean property - creatable
+			The $Action global variable allows you to dynamically reference valid actions on an object type, 
+			or on a specific record. The most likely way to make use of this is to create a URL to perform that action.
+			For example, you can use the expression {!URLFOR($Action[objectName].New)} in an <apex:outputLink>, 
+			with a controller method getObjectName() that provides the name of the sObject.-->
+            <apex:outputLink value="{!URLFOR($Action[coDetails.nameStr].New)}" 
+                rendered="{!coDetails.creatable}">[Create]</apex:outputLink><br/>
+            <apex:outputLink value="{!URLFOR($Action[coDetails.nameStr].List, 
+                $ObjectType[coDetails.nameStr].keyPrefix)}">[List]</apex:outputLink>
+        </apex:column>
+    </apex:dataTable>
+
+</apex:page>
